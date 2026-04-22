@@ -16,7 +16,7 @@ A 45-store regional retailer loses **~$4.2M annually** to demand forecast errors
 
 - Stockouts during Thanksgiving and Christmas weeks leave revenue on the table
 - Overstock in slow periods ties up 25–30% of inventory value in carrying costs
-- Store managers have no data-driven tool to act on — they rely on intuition
+- Store managers have no data-driven tool to act on - they rely on intuition
 
 **This system changes that.**
 
@@ -27,14 +27,14 @@ A 45-store regional retailer loses **~$4.2M annually** to demand forecast errors
 This is not a basic forecasting model. It is a three-layer AI system that:
 
 1. **Forecasts** weekly demand per store and department 4 weeks ahead
-2. **Explains** every forecast in plain English using SHAP — "holiday weeks add $3,200 to Store 1's weekly sales"
-3. **Acts** — the AI agent drafts purchase orders, flags stockout risk, and generates executive briefs automatically
+2. **Explains** every forecast in plain English using SHAP - "holiday weeks add $3,200 to Store 1's weekly sales"
+3. **Acts** - the AI agent drafts purchase orders, flags stockout risk, and generates executive briefs automatically
 
 **Modelled business impact: $1.3M in prevented stockout losses annually across a 45-store chain.**
 
 ---
 
-## Architecture — Three Layers
+## Architecture - Three Layers
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -114,7 +114,7 @@ The output is actionable, not advisory.
 Before the final strategy brief is generated, a dedicated Critic Agent reviews the
 inventory decision against a 4-point quality rubric. If the output scores below 75%,
 it is automatically sent back for revision. I did this because real AI systems in
-production need quality gates — not just outputs.
+production need quality gates - not just outputs.
 
 **I enforced structure at every step**
 Every agent in the pipeline returns a typed Pydantic schema instead of raw text.
@@ -123,7 +123,7 @@ audited node by node. This is how I think about engineering discipline in AI sys
 
 **I made SQL visible, not hidden**
 The EDA notebook does not just use Pandas. I loaded the data into SQLite and wrote
-4 business queries — holiday sales premium by store type, top-performing departments,
+4 business queries - holiday sales premium by store type, top-performing departments,
 and highest-variance stores flagged as stockout risks. SQL is a core skill and I
 wanted it demonstrated explicitly in the work, not just listed on a resume.
 
@@ -151,11 +151,11 @@ wanted it demonstrated explicitly in the work, not just listed on a resume.
 | Tab | What it shows |
 |---|---|
 | Forecast vs actual | XGBoost predictions vs real sales, MAE, MAPE per store-dept |
-| Store risk heatmap | 45-store scatter — HIGH / MEDIUM / LOW stockout risk |
+| Store risk heatmap | 45-store scatter - HIGH / MEDIUM / LOW stockout risk |
 | Holiday impact | Sales lift by holiday event (Super Bowl, Thanksgiving, Christmas) |
 | SHAP feature importance | Top 10 drivers by mean absolute SHAP value |
-| AI strategy brief | Live pipeline output — executive summary, findings, purchase order |
-| AI Chat page | Dedicated chatbot — answers specific questions about any store |
+| AI strategy brief | Live pipeline output - executive summary, findings, purchase order |
+| AI Chat page | Dedicated chatbot - answers specific questions about any store |
 
 ---
 

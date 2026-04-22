@@ -103,19 +103,29 @@ This is not a basic forecasting model. It is a three-layer AI system that:
 
 ## What Makes This Different
 
-Most portfolio projects generate a forecast and stop there. This system goes three steps further:
 
-**Tool-calling agents with real decision authority**
-The Inventory Optimizer does not describe what should happen — it calls Python functions and drafts an actual purchase order with line items, quantities, and estimated values.
+**I gave the agents real decision-making power**
+The Inventory Optimizer agent does not just describe what a store manager should do.
+It calls actual Python functions, calculates reorder quantities from real sales data,
+and produces a formatted purchase order with line items and estimated values.
+The output is actionable, not advisory.
 
-**Reflection loop with a Critic Agent**
-Before the Executive Strategist generates a brief, a dedicated Critic Agent scores the output against a 4-point rubric. If confidence is below 75%, the output is rejected and sent back for revision. This mirrors how production AI systems are actually built.
+**I built a self-correcting pipeline**
+Before the final strategy brief is generated, a dedicated Critic Agent reviews the
+inventory decision against a 4-point quality rubric. If the output scores below 75%,
+it is automatically sent back for revision. I did this because real AI systems in
+production need quality gates — not just outputs.
 
-**Pydantic-typed outputs at every node**
-Every agent node returns a typed schema — `ForecastOutput`, `SHAPExplanation`, `InventoryDecision`, `CriticScore`, `StrategyBrief`. No raw text passed between nodes. This makes the pipeline robust and auditable.
+**I enforced structure at every step**
+Every agent in the pipeline returns a typed Pydantic schema instead of raw text.
+This means no ambiguous outputs, no silent failures, and a pipeline that can be
+audited node by node. This is how I think about engineering discipline in AI systems.
 
-**SQL layer in the EDA**
-The exploration notebook loads data into SQLite and runs 4 business queries — holiday premium by store type, top departments, highest variance stores. SQL is demonstrated explicitly, not assumed.
+**I made SQL visible, not hidden**
+The EDA notebook does not just use Pandas. I loaded the data into SQLite and wrote
+4 business queries — holiday sales premium by store type, top-performing departments,
+and highest-variance stores flagged as stockout risks. SQL is a core skill and I
+wanted it demonstrated explicitly in the work, not just listed on a resume.
 
 ---
 
@@ -240,17 +250,6 @@ Open **http://localhost:8501**
 
 ---
 
-## Portfolio Context
-
-This is Project 3 of a three-project portfolio built to demonstrate the intersection of **business strategy, data analytics, and agentic AI** — targeting strategy analyst and AI consulting roles at firms including McKinsey, EY, KPMG, Deloitte, JP Morgan, and BlackRock.
-
-| Project | Sector | Stack |
-|---|---|---|
-| [Customer Churn Prediction](https://github.com/SanjaySarella) | Financial Services | Python · Random Forest · SHAP · LangChain · Tableau |
-| [Federal Contract Win Rate Intelligence](https://github.com/SanjaySarella) | Management Consulting | Python · Random Forest · LangGraph · ChromaDB · Groq |
-| **Retail Demand Forecasting** ← this repo | **Retail** | **Prophet · XGBoost · LangGraph · ChromaDB · Groq · Power BI** |
-
----
 
 ## Author
 

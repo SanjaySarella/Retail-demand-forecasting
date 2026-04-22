@@ -1,12 +1,13 @@
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-EXPOSE 8080
-
-CMD ["streamlit", "run", "app/Demand_Intelligence.py", "--server.port=8080", "--server.address=0.0.0.0", "--server.headless=true"]
+.venv
+.git
+__pycache__
+*.pyc
+data/raw
+.env
+.ipynb_checkpoints
+notebooks
+*.txt
+*.log
+.idea
+.vscode
+Thumbs.db

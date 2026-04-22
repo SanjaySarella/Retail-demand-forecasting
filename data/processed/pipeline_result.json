@@ -1,0 +1,111 @@
+{
+  "store_id": 1,
+  "dept": 1,
+  "forecast": {
+    "store_id": 1,
+    "dept": 1,
+    "forecast_4wk": [
+      22039.98,
+      23007.21,
+      23945.66,
+      28062.52
+    ],
+    "avg_forecast": 24263.84,
+    "trend": "upward",
+    "confidence": 0.85
+  },
+  "shap_explanation": {
+    "store_id": 1,
+    "dept": 1,
+    "top_driver": "lag_1",
+    "top_driver_value": 13528.68,
+    "holiday_impact": 46.82,
+    "lag_impact": 3869.85,
+    "summary_text": "For Store 1, the top demand driver is 'lag_1' with an average SHAP impact of $13,529. Holiday weeks add $47 on average to weekly sales. Recent sales history (lag_1) contributes $3,870."
+  },
+  "inventory_decision": {
+    "store_id": 1,
+    "reorder_qty": 31503.0,
+    "risk_level": "HIGH",
+    "risk_depts": [
+      9,
+      58,
+      47,
+      26,
+      18
+    ],
+    "purchase_order": {
+      "purchase_order_id": "PO-STORE1-AUTO",
+      "store_id": 1,
+      "store_type": "A",
+      "store_size_sqft": 151315,
+      "generated_by": "Inventory Optimizer Agent",
+      "line_items": [
+        {
+          "dept": 92,
+          "avg_weekly_sales": 135458.97,
+          "reorder_qty": 160358.0,
+          "estimated_value": 64143.2,
+          "priority": "HIGH"
+        },
+        {
+          "dept": 95,
+          "avg_weekly_sales": 120772.06,
+          "reorder_qty": 136124.0,
+          "estimated_value": 54449.6,
+          "priority": "HIGH"
+        },
+        {
+          "dept": 90,
+          "avg_weekly_sales": 82427.55,
+          "reorder_qty": 94961.0,
+          "estimated_value": 37984.4,
+          "priority": "HIGH"
+        },
+        {
+          "dept": 38,
+          "avg_weekly_sales": 79978.22,
+          "reorder_qty": 98790.0,
+          "estimated_value": 39516.0,
+          "priority": "HIGH"
+        },
+        {
+          "dept": 93,
+          "avg_weekly_sales": 71699.18,
+          "reorder_qty": 85649.0,
+          "estimated_value": 34259.6,
+          "priority": "HIGH"
+        }
+      ],
+      "total_estimated_value": 230352.8,
+      "recommended_action": "Replenish top 5 departments before next holiday week",
+      "confidence": 0.82
+    },
+    "confidence": 1.0,
+    "justification": "Reorder quantity of 31,503 units calculated from 8 weeks of sales history. Safety stock set at 1.5 standard deviations above mean sales of $21,548. Risk assessment: 6 high-risk departments, 4 medium-risk departments identified."
+  },
+  "critic_score": {
+    "passed": true,
+    "score": 1.0,
+    "feedback": "All checks passed. Output is actionable.",
+    "retry_count": 0
+  },
+  "strategy_brief": {
+    "store_id": 1,
+    "executive_summary": "Store 1 is experiencing an upward trend in demand, with an average weekly forecast of $24,264. Recent sales history is the top demand driver, and holiday weeks add $47 to weekly sales on average. To mitigate high stockout risk, immediate reorder action is recommended.",
+    "key_findings": [
+      "The top demand driver is 'lag_1' with an average SHAP impact of $13,529",
+      "Holiday weeks add $47 on average to weekly sales",
+      "Recent sales history contributes $3,870 to weekly sales"
+    ],
+    "recommended_actions": [
+      "Reorder 31,503 units to maintain a safety stock level",
+      "Implement stockout risk management strategies for high-risk departments (9, 58, 47, 26, 18)",
+      "Monitor and adjust inventory levels based on demand forecast and sales history"
+    ],
+    "dollar_impact": "$1,300,000"
+  },
+  "retry_count": 0,
+  "error": null,
+  "user_query": "What is the stockout risk for Store 1?"
+}

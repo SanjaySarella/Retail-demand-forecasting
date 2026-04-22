@@ -1,0 +1,148 @@
+{
+  "global_top10_features": [
+    {
+      "feature": "lag_1",
+      "mean_abs_shap": 11045.587890625
+    },
+    {
+      "feature": "rolling_mean_4",
+      "mean_abs_shap": 1749.6331787109375
+    },
+    {
+      "feature": "lag_4",
+      "mean_abs_shap": 1295.7091064453125
+    },
+    {
+      "feature": "lag_52",
+      "mean_abs_shap": 1096.849365234375
+    },
+    {
+      "feature": "rolling_mean_12",
+      "mean_abs_shap": 577.330078125
+    },
+    {
+      "feature": "Week",
+      "mean_abs_shap": 339.5116882324219
+    },
+    {
+      "feature": "lag_8",
+      "mean_abs_shap": 135.69189453125
+    },
+    {
+      "feature": "rolling_std_4",
+      "mean_abs_shap": 130.2122039794922
+    },
+    {
+      "feature": "Dept",
+      "mean_abs_shap": 96.57569885253906
+    },
+    {
+      "feature": "IsHoliday",
+      "mean_abs_shap": 84.08499908447266
+    }
+  ],
+  "holiday_avg_shap": 1.58,
+  "top_feature": "lag_1",
+  "store_summaries": [
+    {
+      "store_id": 1,
+      "top_3_drivers": [
+        [
+          "lag_1",
+          13528.68
+        ],
+        [
+          "rolling_mean_4",
+          1716.98
+        ],
+        [
+          "lag_4",
+          1129.3
+        ]
+      ],
+      "holiday_impact": 46.82,
+      "lag1_impact": 3869.85,
+      "markdown_impact": -4.63
+    },
+    {
+      "store_id": 2,
+      "top_3_drivers": [
+        [
+          "lag_1",
+          10209.19
+        ],
+        [
+          "rolling_mean_4",
+          1372.33
+        ],
+        [
+          "lag_4",
+          1084.62
+        ]
+      ],
+      "holiday_impact": 11.46,
+      "lag1_impact": 2013.77,
+      "markdown_impact": -0.97
+    },
+    {
+      "store_id": 3,
+      "top_3_drivers": [
+        [
+          "lag_1",
+          11125.16
+        ],
+        [
+          "rolling_mean_4",
+          2583.78
+        ],
+        [
+          "lag_4",
+          1933.53
+        ]
+      ],
+      "holiday_impact": -6.54,
+      "lag1_impact": -3307.07,
+      "markdown_impact": -2.06
+    },
+    {
+      "store_id": 4,
+      "top_3_drivers": [
+        [
+          "lag_1",
+          14922.56
+        ],
+        [
+          "rolling_mean_4",
+          2938.57
+        ],
+        [
+          "lag_52",
+          2009.25
+        ]
+      ],
+      "holiday_impact": 61.22,
+      "lag1_impact": 8759.58,
+      "markdown_impact": -17.42
+    },
+    {
+      "store_id": 5,
+      "top_3_drivers": [
+        [
+          "lag_1",
+          8768.67
+        ],
+        [
+          "rolling_mean_4",
+          1665.48
+        ],
+        [
+          "lag_4",
+          1424.03
+        ]
+      ],
+      "holiday_impact": -5.44,
+      "lag1_impact": -8768.67,
+      "markdown_impact": 0.56
+    }
+  ]
+}

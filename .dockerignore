@@ -6,7 +6,6 @@ data/raw
 .env
 .ipynb_checkpoints
 notebooks
-*.txt
 *.log
 .idea
 .vscode

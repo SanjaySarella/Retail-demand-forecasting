@@ -1,4 +1,4 @@
-# Retail Demand Forecasting — AI Intelligence System
+# Retail Demand Forecasting - AI Intelligence System
 
 **Sanjay Sarella** | M.S. Data Analytics, Oklahoma City University
 
@@ -18,7 +18,7 @@
 
 ## The Problem
 
-A 45-store regional retailer loses ~$4.2M annually to demand forecast errors. Stockouts during Thanksgiving and Christmas weeks leave revenue on the table. Overstock in slow periods ties up 25–30% of inventory value in carrying costs. Store managers have no data-driven tool to act on — decisions are made on intuition.
+A 45-store regional retailer loses ~$4.2M annually to demand forecast errors. Stockouts during Thanksgiving and Christmas weeks leave revenue on the table. Overstock in slow periods ties up 25–30% of inventory value in carrying costs. Store managers have no data-driven tool to act on - decisions are made on intuition.
 
 This system changes that.
 
@@ -26,7 +26,7 @@ This system changes that.
 
 ## What This Does
 
-An end-to-end retail demand intelligence system built on real Walmart weekly sales data — 45 stores, 2.5 years, 421,570 records. It forecasts weekly demand 4 weeks ahead, explains every forecast using SHAP, flags stockout risk departments, drafts purchase orders automatically, and generates plain-English inventory briefs via a 5-node LangGraph multi-agent pipeline.
+An end-to-end retail demand intelligence system built on real Walmart weekly sales data - 45 stores, 2.5 years, 421,570 records. It forecasts weekly demand 4 weeks ahead, explains every forecast using SHAP, flags stockout risk departments, drafts purchase orders automatically, and generates plain-English inventory briefs via a 5-node LangGraph multi-agent pipeline.
 
 ---
 
@@ -36,8 +36,8 @@ An end-to-end retail demand intelligence system built on real Walmart weekly sal
 ┌─────────────────────────────────────────────────────────────┐
 │  LAYER 1 — ML FORECASTING                                   │
 │  Prophet → seasonality + holiday effects                    │
-│  XGBoost → CPI, markdowns, store type, lag features        │
-│  Weighted ensemble (40% Prophet + 60% XGBoost)             │
+│  XGBoost → CPI, markdowns, store type, lag features         │
+│  Weighted ensemble (40% Prophet + 60% XGBoost)              │
 │  SHAP TreeExplainer → per-store feature attribution         │
 └─────────────────────────┬───────────────────────────────────┘
                           │
@@ -51,14 +51,14 @@ An end-to-end retail demand intelligence system built on real Walmart weekly sal
 ┌─────────────────────────▼───────────────────────────────────┐
 │  LAYER 3 — LANGGRAPH 5-NODE MULTI-AGENT PIPELINE            │
 │                                                             │
-│  Node 1: Forecast Agent → ForecastOutput (Pydantic)        │
-│  Node 2: SHAP Explainer Agent → SHAPExplanation            │
+│  Node 1: Forecast Agent → ForecastOutput (Pydantic)         │
+│  Node 2: SHAP Explainer Agent → SHAPExplanation             │
 │  Node 3: Inventory Optimizer → tool-calling                 │
 │          calculate_reorder_qty()                            │
 │          flag_stockout_risk()                               │
 │          draft_purchase_order()                             │
-│  Node 4: Critic Agent → reflection loop (max 2 retries)    │
-│  Node 5: Executive Strategist → Groq + Llama 3.3-70B       │
+│  Node 4: Critic Agent → reflection loop (max 2 retries)     │
+│  Node 5: Executive Strategist → Groq + Llama 3.3-70B        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -83,19 +83,19 @@ An end-to-end retail demand intelligence system built on real Walmart weekly sal
 ## What Makes This Different
 
 **Prophet + XGBoost ensemble — right tool for each job**
-Prophet handles time-series seasonality and holiday effects cleanly. XGBoost handles tabular features that Prophet ignores — CPI, unemployment, markdowns, store type. Neither model alone is as strong as both together. The ensemble architecture was a deliberate design choice, not a default.
+Prophet handles time-series seasonality and holiday effects cleanly. XGBoost handles tabular features that Prophet ignores - CPI, unemployment, markdowns, store type. Neither model alone is as strong as both together. The ensemble architecture was a deliberate design choice, not a default.
 
 **Tool-calling agents with real decision authority**
-The Inventory Optimizer agent does not describe what should happen — it calls actual Python functions and produces a structured purchase order with line items, quantities, and estimated values. The output is actionable, not advisory.
+The Inventory Optimizer agent does not describe what should happen - it calls actual Python functions and produces a structured purchase order with line items, quantities, and estimated values. The output is actionable, not advisory.
 
 **Reflection loop with a Critic Agent**
 Before the Executive Strategist generates a brief, a dedicated Critic Agent scores the output against a 4-point quality rubric. If confidence is below 75%, the output is rejected and sent back for revision automatically. This mirrors how production AI quality gates work.
 
 **Pydantic-typed outputs at every node**
-Every agent node returns a typed schema — ForecastOutput, SHAPExplanation, InventoryDecision, CriticScore, StrategyBrief. No raw text passed between nodes. The pipeline is robust and auditable end to end.
+Every agent node returns a typed schema - ForecastOutput, SHAPExplanation, InventoryDecision, CriticScore, StrategyBrief. No raw text passed between nodes. The pipeline is robust and auditable end to end.
 
 **SQL demonstrated explicitly**
-The EDA notebook loads data into SQLite and runs 4 business queries — holiday premium by store type, top departments by sales, highest-variance stores flagged as stockout risks. SQL is shown in the work, not just listed as a skill.
+The EDA notebook loads data into SQLite and runs 4 business queries - holiday premium by store type, top departments by sales, highest-variance stores flagged as stockout risks. SQL is shown in the work, not just listed as a skill.
 
 ---
 

@@ -1,57 +1,48 @@
 # Retail Demand Forecasting — AI Intelligence System
 
-> **Built by Sanjay Sarella** | M.S. Data Analytics, Oklahoma City University
+**Sanjay Sarella** | M.S. Data Analytics, Oklahoma City University
 
 [![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://python.org)
+[![Prophet](https://img.shields.io/badge/Prophet-Forecasting-orange)](https://facebook.github.io/prophet)
+[![XGBoost](https://img.shields.io/badge/XGBoost-Ensemble-orange)](https://xgboost.readthedocs.io)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Multi--Agent-purple)](https://github.com/langchain-ai/langgraph)
 [![Groq](https://img.shields.io/badge/Groq-Llama%203.3--70B-green)](https://console.groq.com)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Live%20App-red?logo=streamlit)](https://streamlit.io)
-[![License](https://img.shields.io/badge/License-MIT-gray)](LICENSE)
+[![GCP](https://img.shields.io/badge/GCP-Cloud%20Run-blue?logo=googlecloud)](https://cloud.google.com)
+[![PowerBI](https://img.shields.io/badge/Power%20BI-Dashboard-yellow?logo=powerbi)](https://powerbi.microsoft.com)
+
+## Live App
+**[Launch App](https://retail-demand-app-646m5mi6fq-uc.a.run.app/)**
 
 ---
 
-## The Business Problem
+## The Problem
 
-A 45-store regional retailer loses **~$4.2M annually** to demand forecast errors.
+A 45-store regional retailer loses ~$4.2M annually to demand forecast errors. Stockouts during Thanksgiving and Christmas weeks leave revenue on the table. Overstock in slow periods ties up 25–30% of inventory value in carrying costs. Store managers have no data-driven tool to act on — decisions are made on intuition.
 
-- Stockouts during Thanksgiving and Christmas weeks leave revenue on the table
-- Overstock in slow periods ties up 25–30% of inventory value in carrying costs
-- Store managers have no data-driven tool to act on - they rely on intuition
-
-**This system changes that.**
+This system changes that.
 
 ---
 
-## What This System Does
+## What This Does
 
-This is not a basic forecasting model. It is a three-layer AI system that:
-
-1. **Forecasts** weekly demand per store and department 4 weeks ahead
-2. **Explains** every forecast in plain English using SHAP - "holiday weeks add $3,200 to Store 1's weekly sales"
-3. **Acts** - the AI agent drafts purchase orders, flags stockout risk, and generates executive briefs automatically
-
-**Modelled business impact: $1.3M in prevented stockout losses annually across a 45-store chain.**
+An end-to-end retail demand intelligence system built on real Walmart weekly sales data — 45 stores, 2.5 years, 421,570 records. It forecasts weekly demand 4 weeks ahead, explains every forecast using SHAP, flags stockout risk departments, drafts purchase orders automatically, and generates plain-English inventory briefs via a 5-node LangGraph multi-agent pipeline.
 
 ---
 
-## Architecture - Three Layers
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  LAYER 1 — ML FORECASTING                                   │
-│                                                             │
-│  Prophet  ──────────────────────────────────────────────►  │
-│  (seasonality + holiday effects)          Weighted Ensemble │
-│                                           (40% + 60%)       │
-│  XGBoost ───────────────────────────────────────────────►  │
-│  (CPI, markdowns, store type, lag features)                 │
-│                                                             │
-│  SHAP TreeExplainer → feature importance per store          │
+│  Prophet → seasonality + holiday effects                    │
+│  XGBoost → CPI, markdowns, store type, lag features        │
+│  Weighted ensemble (40% Prophet + 60% XGBoost)             │
+│  SHAP TreeExplainer → per-store feature attribution         │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
 │  LAYER 2 — RAG KNOWLEDGE BASE                               │
-│                                                             │
 │  ChromaDB vector store                                      │
 │  SHAP summaries + retail strategy documents embedded        │
 │  Semantic retrieval on every agent query                    │
@@ -60,27 +51,14 @@ This is not a basic forecasting model. It is a three-layer AI system that:
 ┌─────────────────────────▼───────────────────────────────────┐
 │  LAYER 3 — LANGGRAPH 5-NODE MULTI-AGENT PIPELINE            │
 │                                                             │
-│  Node 1: Forecast Agent                                     │
-│    └─► Runs ensemble, outputs ForecastOutput (Pydantic)     │
-│                                                             │
-│  Node 2: SHAP Explainer Agent                               │
-│    └─► Surfaces top drivers, outputs SHAPExplanation        │
-│                                                             │
-│  Node 3: Inventory Optimizer Agent  ← TOOL-CALLING          │
-│    └─► Calls calculate_reorder_qty()                        │
-│    └─► Calls flag_stockout_risk()                           │
-│    └─► Calls draft_purchase_order()                         │
-│    └─► Outputs InventoryDecision (Pydantic)                 │
-│                                                             │
-│  Node 4: Critic Agent  ← REFLECTION LOOP                   │
-│    └─► Scores output against 4-point rubric                 │
-│    └─► Routes back to Node 3 if score < 0.75               │
-│    └─► Max 2 retry cycles                                   │
-│                                                             │
-│  Node 5: Executive Strategist Agent                         │
-│    └─► RAG + Groq + Llama 3.3-70B                          │
-│    └─► Generates plain-English strategy brief               │
-│    └─► Answers store manager queries via Streamlit chat     │
+│  Node 1: Forecast Agent → ForecastOutput (Pydantic)        │
+│  Node 2: SHAP Explainer Agent → SHAPExplanation            │
+│  Node 3: Inventory Optimizer → tool-calling                 │
+│          calculate_reorder_qty()                            │
+│          flag_stockout_risk()                               │
+│          draft_purchase_order()                             │
+│  Node 4: Critic Agent → reflection loop (max 2 retries)    │
+│  Node 5: Executive Strategist → Groq + Llama 3.3-70B       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -90,42 +68,49 @@ This is not a basic forecasting model. It is a three-layer AI system that:
 
 | Metric | Value |
 |---|---|
-| Dataset | 45 Walmart stores · 2.5 years · 421,570 rows |
+| Dataset | 45 Walmart stores · 2.5 years · 421,570 records |
 | Forecast horizon | 4 weeks ahead per store × department |
-| Holiday sales lift detected | +7.2% average (SHAP verified) |
+| Holiday sales lift detected | +7.2% (SHAP verified) |
 | High-risk departments flagged (Store 1) | 5 departments |
-| Recommended reorder quantity (Store 1) | 31,503 units |
+| Recommended reorder quantity | 31,503 units |
 | Critic Agent quality score | 100% pass rate |
 | Estimated prevented stockout losses | $1.3M annually |
-| Pipeline cost | $0 — fully open source |
+| Deployment | GCP Cloud Run |
+| Total cost | $0 — fully open source |
 
 ---
 
 ## What Makes This Different
 
+**Prophet + XGBoost ensemble — right tool for each job**
+Prophet handles time-series seasonality and holiday effects cleanly. XGBoost handles tabular features that Prophet ignores — CPI, unemployment, markdowns, store type. Neither model alone is as strong as both together. The ensemble architecture was a deliberate design choice, not a default.
 
-**I gave the agents real decision-making power**
-The Inventory Optimizer agent does not just describe what a store manager should do.
-It calls actual Python functions, calculates reorder quantities from real sales data,
-and produces a formatted purchase order with line items and estimated values.
-The output is actionable, not advisory.
+**Tool-calling agents with real decision authority**
+The Inventory Optimizer agent does not describe what should happen — it calls actual Python functions and produces a structured purchase order with line items, quantities, and estimated values. The output is actionable, not advisory.
 
-**I built a self-correcting pipeline**
-Before the final strategy brief is generated, a dedicated Critic Agent reviews the
-inventory decision against a 4-point quality rubric. If the output scores below 75%,
-it is automatically sent back for revision. I did this because real AI systems in
-production need quality gates - not just outputs.
+**Reflection loop with a Critic Agent**
+Before the Executive Strategist generates a brief, a dedicated Critic Agent scores the output against a 4-point quality rubric. If confidence is below 75%, the output is rejected and sent back for revision automatically. This mirrors how production AI quality gates work.
 
-**I enforced structure at every step**
-Every agent in the pipeline returns a typed Pydantic schema instead of raw text.
-This means no ambiguous outputs, no silent failures, and a pipeline that can be
-audited node by node. This is how I think about engineering discipline in AI systems.
+**Pydantic-typed outputs at every node**
+Every agent node returns a typed schema — ForecastOutput, SHAPExplanation, InventoryDecision, CriticScore, StrategyBrief. No raw text passed between nodes. The pipeline is robust and auditable end to end.
 
-**I made SQL visible, not hidden**
-The EDA notebook does not just use Pandas. I loaded the data into SQLite and wrote
-4 business queries - holiday sales premium by store type, top-performing departments,
-and highest-variance stores flagged as stockout risks. SQL is a core skill and I
-wanted it demonstrated explicitly in the work, not just listed on a resume.
+**SQL demonstrated explicitly**
+The EDA notebook loads data into SQLite and runs 4 business queries — holiday premium by store type, top departments by sales, highest-variance stores flagged as stockout risks. SQL is shown in the work, not just listed as a skill.
+
+---
+
+## How to Use the App
+
+1. Open the **[live app](https://retail-demand-app-646m5mi6fq-uc.a.run.app/)**
+2. Select a store (1–45) and department from the sidebar
+3. Click **Analyse this store** to run the full 5-node pipeline
+4. Navigate across 5 tabs:
+   - **Forecast vs Actual** — XGBoost predictions vs real sales with MAE and MAPE
+   - **Store Risk Heatmap** — 45-store scatter showing HIGH / MEDIUM / LOW stockout risk
+   - **Holiday Impact** — Sales lift by holiday event with actual vs forecast comparison
+   - **SHAP Feature Importance** — Top 10 demand drivers by mean absolute SHAP value
+   - **AI Strategy Brief** — Live pipeline output with executive summary, findings, and purchase order draft
+5. Use the **AI Chat** page for plain-English questions about any store
 
 ---
 
@@ -134,28 +119,14 @@ wanted it demonstrated explicitly in the work, not just listed on a resume.
 | Category | Tools |
 |---|---|
 | ML & Forecasting | Prophet · XGBoost · Scikit-learn · SHAP |
-| Agentic AI | LangGraph · LangChain · ChromaDB · Pydantic |
-| Language Model | Groq API · Llama 3.3-70B (free tier) |
-| Evaluation | DeepEval |
+| Agentic AI | LangGraph · LangChain · ChromaDB · Pydantic · Groq + Llama 3.3-70B |
 | App | Streamlit |
-| Visualization | Power BI · Plotly · Matplotlib · Seaborn |
-| Data | SQLite · Pandas · NumPy |
+| Visualization | Power BI · Plotly |
+| Deployment | Docker · GCP Cloud Run |
+| Data | SQLite · Pandas · NumPy · Kaggle Walmart Dataset |
 | Dev | Python 3.11 · Jupyter · Git |
 
 **100% open source. Zero cost.**
-
----
-
-## Streamlit App — 5 Tabs + AI Chat
-
-| Tab | What it shows |
-|---|---|
-| Forecast vs actual | XGBoost predictions vs real sales, MAE, MAPE per store-dept |
-| Store risk heatmap | 45-store scatter - HIGH / MEDIUM / LOW stockout risk |
-| Holiday impact | Sales lift by holiday event (Super Bowl, Thanksgiving, Christmas) |
-| SHAP feature importance | Top 10 drivers by mean absolute SHAP value |
-| AI strategy brief | Live pipeline output - executive summary, findings, purchase order |
-| AI Chat page | Dedicated chatbot - answers specific questions about any store |
 
 ---
 
@@ -167,95 +138,47 @@ retail-demand-forecasting/
 │   ├── pipeline.py          ← LangGraph StateGraph (5 nodes + reflection loop)
 │   ├── nodes.py             ← All 5 agent node definitions + Pydantic schemas
 │   ├── tools.py             ← Tool-calling functions (reorder qty, risk, PO draft)
-│   └── chroma_ingest.py     ← ChromaDB ingestion (SHAP + strategy docs)
+│   └── chroma_ingest.py     ← ChromaDB ingestion
 ├── app/
 │   ├── Demand_Intelligence.py   ← Main Streamlit dashboard
 │   └── pages/
 │       └── 01_AI_Chat.py        ← Dedicated AI chat agent
 ├── data/
-│   ├── raw/                 ← Kaggle CSVs (see setup — not tracked in git)
-│   └── processed/           ← Generated artifacts (models, predictions, SHAP)
-├── docs/                    ← SHAP plots (beeswarm, waterfall, bar, holiday)
+│   ├── raw/                 ← Kaggle CSVs (not tracked — see dataset note)
+│   └── processed/           ← Models, predictions, SHAP artifacts
+├── docs/                    ← SHAP plots + Power BI dashboard
 ├── notebooks/
 │   ├── 01_eda.ipynb         ← EDA + SQL queries + data cleaning
-│   ├── 02_models.ipynb      ← Prophet + XGBoost + ensemble + evaluation
-│   └── 03_shap.ipynb        ← SHAP analysis + ChromaDB ingest + exports
-├── tableau/exports/         ← CSVs for Power BI dashboard
-├── .env                     ← API keys (not tracked)
-└── requirements.txt
+│   ├── 02_models.ipynb      ← Prophet + XGBoost + ensemble evaluation
+│   └── 03_shap.ipynb        ← SHAP analysis + ChromaDB ingestion
+├── tableau/exports/         ← CSVs for Power BI
+├── Dockerfile
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## Setup — Run It Yourself
+## Dataset
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/SanjaySarella/retail-demand-forecasting.git
-cd retail-demand-forecasting
+[![Kaggle](https://img.shields.io/badge/Kaggle-Walmart%20Sales%20Forecast-blue?logo=kaggle)](https://www.kaggle.com/datasets/aslanahmedov/walmart-sales-forecast)
+
+Free Kaggle account required. Download and place in `data/raw/`:
 ```
-
-### 2. Create virtual environment
-```bash
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# Mac / Linux
-source .venv/bin/activate
+train.csv · features.csv · stores.csv
 ```
-
-### 3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Add your Groq API key
-Create a `.env` file in the root:
-```
-GROQ_API_KEY=your_groq_api_key_here
-```
-Free key at: https://console.groq.com — takes 2 minutes, no card required.
-
-### 5. Download the Walmart dataset
-
-[![Kaggle Dataset](https://img.shields.io/badge/Kaggle-Walmart%20Sales%20Forecast-blue?logo=kaggle)](https://www.kaggle.com/datasets/aslanahmedov/walmart-sales-forecast)
-
-Free Kaggle account required. Place these three files in `data/raw/`:
-```
-data/raw/train.csv
-data/raw/features.csv
-data/raw/stores.csv
-```
-
-### 6. Run notebooks in order
-```bash
-jupyter notebook
-```
-1. `notebooks/01_eda.ipynb` — EDA, SQL layer, data cleaning
-2. `notebooks/02_models.ipynb` — Prophet + XGBoost + ensemble
-3. `notebooks/03_shap.ipynb` — SHAP + ChromaDB ingestion
-
-### 7. Run the LangGraph pipeline
-```bash
-python agents/pipeline.py
-```
-
-### 8. Launch the app
-```bash
-streamlit run app/Demand_Intelligence.py
-```
-Open **http://localhost:8501**
 
 ---
 
+## Power BI Dashboard
+5-page dashboard covering forecast vs actual, store risk heatmap, holiday impact analysis, and SHAP feature importance. File available in `docs/Retail_Demand_Intelligence.pbix`.
+
+---
 
 ## Author
 
 **Sanjay Sarella**
 M.S. Data Analytics — Oklahoma City University
-Positioning: Business Strategy + Data Analytics + Agentic AI
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Sanjay%20Sarella-blue?logo=linkedin)](https://linkedin.com/in/sanjaysarella)
 [![GitHub](https://img.shields.io/badge/GitHub-SanjaySarella-black?logo=github)](https://github.com/SanjaySarella)

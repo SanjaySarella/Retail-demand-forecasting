@@ -1,0 +1,11 @@
+{
+  "series_reconciled": 3331,
+  "source_rows": 421570,
+  "missing_calendar_weeks": 27667,
+  "backtest_series_checked": 50,
+  "forecast_cases_checked": 4358,
+  "seasonal_lower_mae_series": 37,
+  "last_week_lower_mae_series": 13,
+  "equal_mae_series": 0,
+  "scope": "All series totals and four-week forecasts; full rolling evaluation for department 1 in every store and series shorter than 70 weeks. Historical evaluation, not production validation."
+}

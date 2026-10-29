@@ -7,7 +7,8 @@ from analytics import load_sales, series_for, forecast, backtest, metrics, METHO
 
 st.set_page_config(page_title='Retail Sales Forecasting | Sanjay Sarella', layout='wide')
 st.title('Retail Sales Forecasting')
-st.caption('Historical sales review and evidence-based forecasting for store and department planning')
+st.caption('Sanjay Sarella · Data Analytics Portfolio')
+st.write('Analyze historical sales, validate forecasting methods, and review a reproducible four-week outlook.')
 @st.cache_data
 def data():
     return load_sales()

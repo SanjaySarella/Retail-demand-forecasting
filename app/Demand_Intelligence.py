@@ -35,7 +35,7 @@ with performance:
     comparison = pd.DataFrame({'Latest four weeks': s.iloc[-4:].values, 'Previous four weeks': s.iloc[-8:-4].values}) if len(s) >= 8 else pd.DataFrame()
     if len(comparison) and comparison.notna().all().all():
         recent, previous = comparison.sum()
-        st.write(f'Latest four-week sales were ${recent:,.2f}, compared with ${previous:,.2f} in the preceding four weeks—a recorded change of ${recent-previous:,.2f}.')
+        st.markdown(f'Latest four-week sales were \\${recent:,.2f}, compared with \\${previous:,.2f} in the preceding four weeks—a recorded change of \\${recent-previous:,.2f}.')
         st.caption('This comparison describes the observed sales movement; it does not assign a cause.')
     st.download_button('Export selected sales data', s.rename('Weekly_Sales').to_csv(index_label='Date'), 'selected_sales.csv', 'text/csv')
 

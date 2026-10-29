@@ -4,7 +4,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'app'))
 import numpy as np
 import pandas as pd
 import pytest
-from analytics import load_sales,series_for,forecast,backtest,metrics,METHODS
+from analytics import load_sales,series_for,forecast,backtest,metrics,decision_summary,quality_summary,METHODS
 
 def test_known_forecast_and_dates():
     s=pd.Series(np.arange(60.),index=pd.date_range('2020-01-03',periods=60,freq='7D'))
@@ -44,6 +44,21 @@ def test_real_data_reconciles():
     df=load_sales();s=series_for(df,1,1)
     assert s.sum()==pytest.approx(df.loc[(df.Store==1)&(df.Dept==1),'Weekly_Sales'].sum())
     assert len(backtest(s))==96
+
+def test_decision_summary_selects_lower_error_method():
+    rows=pd.DataFrame([{'Method':'A','Actual':100.,'Forecast':100.},
+                       {'Method':'B','Actual':100.,'Forecast':120.}])
+    decision=decision_summary(rows)
+    assert decision['preferred']=='A'
+    assert decision['supported'] is True
+
+def test_quality_summary_reports_observed_conditions():
+    df=pd.DataFrame({'Store':[1,1],'Dept':[1,1],
+                     'Date':pd.to_datetime(['2024-01-05','2024-01-12'])})
+    q=quality_summary(df,pd.Series([10.,-2.,float('nan')]))
+    assert q['duplicate_keys']==0
+    assert q['selected_negative_sales']==1
+    assert q['selected_missing_weeks']==1
 
 def test_streamlit_initial_and_filter():
     from streamlit.testing.v1 import AppTest

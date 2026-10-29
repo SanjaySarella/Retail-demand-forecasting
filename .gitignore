@@ -49,3 +49,8 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+# Local validation and frontend build products
+node_modules/
+static/
+.pytest_cache/
+__pycache__/

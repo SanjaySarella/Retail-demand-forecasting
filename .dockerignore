@@ -2,7 +2,9 @@
 .git
 __pycache__
 *.pyc
-data/raw
+data/raw/*
+!data/raw/train.csv
+data/processed
 .env
 .ipynb_checkpoints
 notebooks
@@ -10,3 +12,5 @@ notebooks
 .idea
 .vscode
 Thumbs.db
+validation
+tests

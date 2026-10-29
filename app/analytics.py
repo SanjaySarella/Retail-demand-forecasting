@@ -55,3 +55,23 @@ def metrics(results):
                      'MAE dollars': float(error.abs().mean()), 'Bias dollars': float(error.mean()),
                      'WAPE percent': float(error.abs().sum()/denominator*100) if denominator else None})
     return pd.DataFrame(rows)
+
+def decision_summary(results):
+    """Recommend a baseline only when it wins on both reported error measures."""
+    table = metrics(results).sort_values(['WAPE percent', 'MAE dollars']).reset_index(drop=True)
+    if len(table) < 2:
+        return None
+    best, other = table.iloc[0], table.iloc[1]
+    mae_improvement = float(other['MAE dollars'] - best['MAE dollars'])
+    wape_improvement = float(other['WAPE percent'] - best['WAPE percent'])
+    return {'preferred': best['Method'], 'comparison': other['Method'],
+            'mae_improvement': mae_improvement, 'wape_point_improvement': wape_improvement,
+            'evaluated_predictions': int(best['Evaluated predictions']),
+            'supported': mae_improvement > 0 and wape_improvement > 0}
+
+def quality_summary(df, series):
+    return {'source_rows': int(len(df)),
+            'duplicate_keys': int(df.duplicated(['Store', 'Dept', 'Date']).sum()),
+            'selected_rows': int(series.notna().sum()),
+            'selected_missing_weeks': int(series.isna().sum()),
+            'selected_negative_sales': int((series.dropna() < 0).sum())}
